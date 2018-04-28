@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="zsc.zzc.dao.SectionDao">
+
+	<resultMap type="Section" id="BaseResultMap">
+		<id column="id" property="id" jdbcType="CHAR" />
+		<result column="course_id" property="courseId" jdbcType="CHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="index" property="index" jdbcType="INTEGER" />
+		<result column="sub_title" property="subTitle" jdbcType="VARCHAR" />
+		<result column="sub_index" property="subIndex" jdbcType="INTEGER" />
+	</resultMap>
+		
+	 <resultMap type="Section" id="Chapters">
+		<id column="id" property="id" jdbcType="CHAR" />
+		<result column="course_id" property="courseId" jdbcType="CHAR" />
+		<result column="title" property="title" jdbcType="VARCHAR" />
+		<result column="index" property="index" jdbcType="INTEGER" />
+		<!-- <collection property="listChapter" 
+			ofType="Section" select="selectDetailedsForChapter">
+		</collection> -->
+	</resultMap>
+	
+	
+	<resultMap type="Section" id="Detaileds">
+		<id column="id" property="id" jdbcType="CHAR" />
+		<result column="course_id" property="courseId" jdbcType="CHAR" />
+		<result column="sub_title" property="subTitle" jdbcType="VARCHAR" />
+		<result column="sub_index" property="subIndex" jdbcType="INTEGER" />
+	</resultMap>
+	
+	<select id="listSections" parameterType="java.lang.String" resultMap="BaseResultMap">
+		select * from section sc where sc.course_Id=#{id} order by sc.index
+	</select>
+	
+	<select id="selectChaptersByCourseId" parameterType="java.lang.String" resultMap="Chapters">
+		select * from section sc where sc.course_id=#{id} group by sc.index order by sc.index
+	</select>
+	
+	<select id="selectDetailedsForChapter" resultMap="Detaileds">
+		select * from section st where st.index=#{index} and st.course_id=#{courseId}
+	</select>
+</mapper>

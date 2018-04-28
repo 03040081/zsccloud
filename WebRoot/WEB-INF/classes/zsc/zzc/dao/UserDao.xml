@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="zsc.zzc.dao.UserDao">
+
+	<resultMap id="BaseResultMap" type="zsc.zzc.entity.User">
+		<id column="id" property="id" jdbcType="CHAR" />
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		<result column="birthday" property="birthday" jdbcType="VARCHAR" />
+		<result column="gender" property="gender" jdbcType="BIT" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="phonenum" property="phonenum" jdbcType="CHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="identity" property="identity" jdbcType="INTEGER" />
+		<result column="created_time" property="createdTime" />
+	</resultMap>
+	
+	<resultMap id="UserResForComment" type="zsc.zzc.entity.User">
+		<result column="username" property="username" jdbcType="VARCHAR" />
+		<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<select id="login" parameterType="Map" resultMap="BaseResultMap">
+	
+	select * from user u where 
+	(u.username=#{useraccout} or u.phonenum=#{useraccout})
+	 and u.password=#{password}
+		<!-- select * from user u 
+		<where>
+			<if test="username!=null and username!=''">
+				u.username=#{username}
+			</if>
+			<if test="phonenum!=null and phonenum!=''">
+				u.phonenum=#{phonenum}
+			</if>
+			<if test="password!=null and password!=''">
+				and
+				u.password=#{password}
+			</if>
+		</where> -->
+	</select>
+	
+	<select id="selectUserById" parameterType="java.lang.String" resultMap="UserResForComment">
+		select u.username,u.avatar from user u where u.id=#{id}
+	</select>
+	
+</mapper>

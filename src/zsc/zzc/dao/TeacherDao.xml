@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="zsc.zzc.dao.TeacherDao">
+
+	<resultMap id="BaseResultMap" type="Teacher">
+		<id column="id" property="id" jdbcType="CHAR" />
+		<result column="user_id" property="userId" jdbcType="CHAR" />
+		<result column="college_id" property="collegeId" jdbcType="CHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="grade" property="grade" jdbcType="VARCHAR" />
+		<!-- <result column="intro" property="intro" jdbcType="VARCHAR" />
+		<result column="avatar" property="avatar" jdbcType="VARCHAR" />
+		<result column="created_time" property="createdTime" jdbcType="TIMESTAMP" /> -->
+	</resultMap>
+	
+	<resultMap id="TeaMap" type="Teacher">
+		<id column="id" property="id" jdbcType="CHAR" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="grade" property="grade" jdbcType="VARCHAR" />
+	</resultMap>
+	
+	<select id="selecTeacherById" parameterType="java.lang.String" resultMap="TeaMap">
+		select * from teacher tc where tc.id=#{id}
+	</select>
+
+</mapper>

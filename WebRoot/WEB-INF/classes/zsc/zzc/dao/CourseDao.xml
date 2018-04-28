@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="zsc.zzc.dao.CourseDao">
+
+	<resultMap id="BaseResultMap" type="Course">
+		<id column="id" property="id" />
+		<result column="name" property="name" />
+		<result column="teacher_id" property="teacherId" />
+		<result column="profession_id" property="professionId" />
+		<result column="tag_id" property="tagId"/>
+		<result column="icon" property="icon" />
+		<result column="type" property="type" />
+		<result column="intro" property="intro" />
+		<result column="fit_people" property="fitPeople" />
+		
+		<association property="teacher" column="teacher_id" javaType="Teacher"
+		 select="zsc.zzc.dao.TeacherDao.selecTeacherById"/>
+		
+		<association property="profession" column="profession_id" javaType="Profession"
+		 select="zsc.zzc.dao.ProfessionDao.selectProfessionById"/>
+		 
+		<collection property="listSections" ofType="Section" 
+		select="zsc.zzc.dao.SectionDao.selectChaptersByCourseId" column="id">
+		</collection>
+		
+	</resultMap>
+
+	<resultMap id="ListIds" type="java.lang.String">
+		<result column="id" property="id" jdbcType="CHAR" />
+	</resultMap>
+
+	<select id="listCourses" resultMap="BaseResultMap"
+		parameterType="Map">
+
+		select * from course cs 
+		<where>
+			<if test="tag_id!=null">
+				cs.tag_id=#{tag_id}
+			</if>
+			<if test="profession_id!=null">
+				and
+				cs.profession_id=#{profession_id}
+			</if>
+			<if test="name!=null and name!=''">
+				and
+				cs.name like '%${name}%'
+			</if>
+			<if test="id!=null">
+				and 
+				cs.id=#{id}
+			</if>
+			<if test="currPage!=null">
+				limit #{currPage} , 10
+			</if>
+		</where>
+	</select>
+
+	<select id="listId" resultMap="ListIds">
+		select id from course
+	</select>
+
+	<select id="listRanCourse" parameterType="java.util.List" resultMap="BaseResultMap">
+		select * from course where id in
+		<foreach collection="list" item="idc" open="(" close=")"
+			separator=",">
+			#{idc}
+		</foreach>
+	</select>
+
+	<select id="listRanRecommend" parameterType="java.util.List" resultMap="BaseResultMap">
+		select * from course where id in
+		<foreach collection="list" item="idc" open="(" close=")"
+			separator=",">
+			#{idc}
+		</foreach>
+	</select>
+	
+	<!-- <select id="selectByCourseId" parameterType="java.lang.String" resultType="Course">
+		select * from course cs
+		where cs.id=#{id}
+	</select> -->
+</mapper>
