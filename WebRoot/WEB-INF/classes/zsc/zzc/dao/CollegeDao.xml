@@ -15,6 +15,6 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
 	</resultMap>
 	
 	<select id="listColleges" resultMap="CollegeList">
-		select * from college cg left join profession pf on cg.id=pf.college_id
+		select * from college
 	</select>
 </mapper>
